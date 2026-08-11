@@ -1,5 +1,14 @@
 import { Component } from 'react';
 
+class Count extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return <div>Count = {this.props.todos.length}</div>;
+  }
+}
 class ClassInput extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +20,7 @@ class ClassInput extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleInputChange(e) {
@@ -24,6 +34,13 @@ class ClassInput extends Component {
     e.preventDefault();
     this.setState((state) => ({
       todos: state.todos.concat(state.inputVal),
+      inputVal: '',
+    }));
+  }
+
+  handleDelete(todo) {
+    this.setState((state) => ({
+      todos: state.todos.filter((item) => item !== todo),
       inputVal: '',
     }));
   }
@@ -45,9 +62,16 @@ class ClassInput extends Component {
         </form>
         <h4>All the tasks!</h4>
         {/* The list of all the To-Do's, displayed */}
+        <Count todos={this.state.todos} />
         <ul>
           {this.state.todos.map((todo) => (
-            <li key={todo}>{todo}</li>
+            <div key={todo}>
+              <li>{todo}</li>
+              <button type="button" onClick={() => this.handleEdit(todo)} />
+              <button type="button" onClick={() => this.handleDelete(todo)}>
+                Delete
+              </button>
+            </div>
           ))}
         </ul>
       </section>
